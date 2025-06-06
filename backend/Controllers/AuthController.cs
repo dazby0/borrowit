@@ -42,7 +42,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(LoginDto dto)
+    public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
         if (user == null)
@@ -52,6 +52,22 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid credentials");
 
         var token = _auth.CreateToken(user);
-        return Ok(token);
+
+        Response.Cookies.Append("jwt", token, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true, 
+            SameSite = SameSiteMode.None, 
+            Expires = DateTimeOffset.UtcNow.AddHours(1)
+        });
+
+        return Ok();
+    }
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete("jwt");
+        return Ok();
     }
 }

@@ -18,6 +18,14 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.Request.Cookies["jwt"];
+            return Task.CompletedTask;
+        }
+    };
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -62,7 +70,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Wpisz token JWT w formacie: Bearer {twój_token}"
+        Description = "Wpisz token JWT w formacie: Bearer {twï¿½j_token}"
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
