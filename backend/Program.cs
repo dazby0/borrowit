@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.Json.Serialization;
 using System.Text;
 using backend.Data;
 using backend.Services;
@@ -57,8 +58,6 @@ builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<BorrowingService>();
 builder.Services.AddScoped<ExportService>();
-
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -87,6 +86,12 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 var app = builder.Build();
 

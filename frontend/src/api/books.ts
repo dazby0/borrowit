@@ -23,3 +23,12 @@ export const getBooks = async (
   if (!res.ok) throw new Error("Failed to fetch books");
   return res.json();
 };
+
+export const getBookById = async (id: number): Promise<Book> => {
+  const res = await fetch(`${API_URL}/${id}`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch book details");
+  return res.json();
+};

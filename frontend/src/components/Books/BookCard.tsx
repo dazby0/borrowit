@@ -1,14 +1,29 @@
 import { Card, CardContent, Typography, Box, Chip } from "@mui/material";
 import { format } from "date-fns";
 import type { Book } from "../../types/book";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   book: Book;
 }
 
 const BookCard = ({ book }: Props) => {
+  const navigate = useNavigate();
+
   return (
-    <Card variant="outlined" sx={{ width: 300 }}>
+    <Card
+      variant="outlined"
+      sx={{
+        minWidth: 275,
+        cursor: "pointer",
+        transition: "transform 0.2s ease-in-out",
+        "&:hover": {
+          transform: "scale(1.02)",
+          boxShadow: 3,
+        },
+      }}
+      onClick={() => navigate(`/books/${book.id}`)}
+    >
       <CardContent>
         <Box
           display="flex"
