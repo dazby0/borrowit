@@ -18,7 +18,7 @@ const Sidebar = () => {
 
   const items = [
     { label: "Dashboard", icon: <Home />, to: "/" },
-    { label: "Borrowings", icon: <MenuBook />, to: "/borrowings" },
+    { label: "Borrowed Books", icon: <MenuBook />, to: "/borrowings/me" },
     ...(hasRole("Admin")
       ? [{ label: "Admin Panel", icon: <People />, to: "/admin/users" }]
       : []),

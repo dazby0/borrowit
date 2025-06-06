@@ -74,6 +74,7 @@ public class BorrowingService
             .Select(b => new BorrowingDto
             {
                 Id = b.Id,
+                BookId = b.BookId,
                 BookTitle = b.Book.Title,
                 BorrowedAt = b.BorrowedAt,
                 ReturnDueDate = b.ReturnDueDate,

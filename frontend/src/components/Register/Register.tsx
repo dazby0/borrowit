@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { FormProvider } from "react-hook-form";
 import FormInput from "../Form/FormInput";
 import { useRegisterForm } from "./hooks/useRegisterForm";
-import FormSnackbarSuccess from "../Form/FormSnackbarSuccess";
+import Snackbar from "../Snackbar";
 
 const RegisterForm = () => {
-  const { form, onSubmit, isLoading, isSuccess } = useRegisterForm();
+  const { form, onSubmit, isLoading, showError, setShowError } =
+    useRegisterForm();
 
   return (
     <>
@@ -68,9 +69,11 @@ const RegisterForm = () => {
         </MuiLink>
       </Typography>
 
-      <FormSnackbarSuccess
-        open={isSuccess}
-        message="Registration successful! You can now log in."
+      <Snackbar
+        open={showError}
+        severity="error"
+        message="Registration failed. Please try again."
+        onClose={() => setShowError(false)}
       />
     </>
   );

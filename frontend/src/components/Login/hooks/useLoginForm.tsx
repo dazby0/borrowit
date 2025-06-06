@@ -8,11 +8,13 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin } from "../../../api/mutations/useAuth";
+import { useState } from "react";
 
 export const useLoginForm = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { refetchUser } = useAuth();
+  const [showError, setShowError] = useState(false);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -27,7 +29,7 @@ export const useLoginForm = () => {
       await refetchUser();
       navigate("/");
     } catch {
-      alert("Login failed. Please check your credentials.");
+      setShowError(true);
     }
   };
 
@@ -35,5 +37,7 @@ export const useLoginForm = () => {
     form,
     onSubmit,
     isLoading: loginMutation.isPending,
+    showError,
+    setShowError,
   };
 };

@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { FormProvider } from "react-hook-form";
 import FormInput from "../Form/FormInput";
 import { useLoginForm } from "./hooks/useLoginForm";
+import Snackbar from "../Snackbar";
 
 const LoginForm = () => {
-  const { form, onSubmit, isLoading } = useLoginForm();
+  const { form, onSubmit, isLoading, showError, setShowError } = useLoginForm();
 
   return (
     <Paper
@@ -62,6 +63,13 @@ const LoginForm = () => {
           Sign up now
         </MuiLink>
       </Typography>
+
+      <Snackbar
+        open={showError}
+        severity="error"
+        message="Login failed. Please check your credentials."
+        onClose={() => setShowError(false)}
+      />
     </Paper>
   );
 };

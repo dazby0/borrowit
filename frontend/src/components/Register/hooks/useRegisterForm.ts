@@ -7,9 +7,11 @@ import {
   type RegisterFormValues,
 } from "../../../schemas/auth/registerSchema";
 import { registerUser } from "../../../api/auth";
+import { useState } from "react";
 
 export const useRegisterForm = () => {
   const navigate = useNavigate();
+  const [showError, setShowError] = useState(false);
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -26,7 +28,7 @@ export const useRegisterForm = () => {
       navigate("/login");
     },
     onError: () => {
-      alert("Registration failed.");
+      setShowError(true);
     },
   });
 
@@ -39,5 +41,7 @@ export const useRegisterForm = () => {
     onSubmit,
     isLoading: mutation.isPending,
     isSuccess: mutation.isSuccess,
+    showError,
+    setShowError,
   };
 };

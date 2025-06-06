@@ -13,16 +13,21 @@ import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { useBorrowBook } from "../../api/mutations/useBorrowings";
 import { BorrowModal } from "../../components/Borrowings/BorrowModal";
+import Snackbar from "../../components/Snackbar";
 
 const BookDetailsPage = () => {
   const { id } = useParams();
   const bookId = parseInt(id || "0", 10);
-  const { user } = useAuth();
-
-  console.log("Role: ", user?.role);
+  const { hasRole } = useAuth();
 
   const { data: book, isLoading } = useBookDetails(bookId);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error";
+  }>({ open: false, message: "", severity: "success" });
+
   const borrowMutation = useBorrowBook();
 
   const handleBorrow = async (returnDueDate: string) => {
@@ -31,9 +36,18 @@ const BookDetailsPage = () => {
         bookId,
         returnDueDate,
       });
+      setSnackbar({
+        open: true,
+        message: "Book borrowed successfully",
+        severity: "success",
+      });
       setModalOpen(false);
-    } catch (err) {
-      alert("Failed to borrow book");
+    } catch {
+      setSnackbar({
+        open: true,
+        message: "Failed to borrow book",
+        severity: "error",
+      });
     }
   };
 
@@ -74,7 +88,7 @@ const BookDetailsPage = () => {
         <CountdownTimer endDate={book.returnDueDate} />
       )}
 
-      {user?.role === "User" && book.isAvailable && (
+      {hasRole("User") && book.isAvailable && (
         <Box mt={4}>
           <Button variant="contained" onClick={() => setModalOpen(true)}>
             Borrow This Book
@@ -86,6 +100,13 @@ const BookDetailsPage = () => {
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
         onSubmit={handleBorrow}
+      />
+
+      <Snackbar
+        open={snackbar.open}
+        severity={snackbar.severity}
+        message={snackbar.message}
+        onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))}
       />
     </Paper>
   );

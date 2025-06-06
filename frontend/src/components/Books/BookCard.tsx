@@ -14,7 +14,7 @@ const BookCard = ({ book }: Props) => {
     <Card
       variant="outlined"
       sx={{
-        minWidth: 275,
+        width: 275,
         cursor: "pointer",
         transition: "transform 0.2s ease-in-out",
         "&:hover": {
@@ -40,15 +40,6 @@ const BookCard = ({ book }: Props) => {
         </Box>
 
         <Typography color="text.secondary">{book.author}</Typography>
-        <Typography variant="body2" mt={1}>
-          Year: {book.year}
-        </Typography>
-
-        {book.description && (
-          <Typography variant="body2" mt={1}>
-            {book.description}
-          </Typography>
-        )}
 
         {!book.isAvailable && book.returnDueDate && (
           <Typography variant="body2" mt={1} color="error">

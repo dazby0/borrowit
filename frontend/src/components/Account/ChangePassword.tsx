@@ -2,9 +2,20 @@ import { Box, Button, Paper, Typography } from "@mui/material";
 import { FormProvider } from "react-hook-form";
 import FormInput from "../Form/FormInput";
 import { useChangePasswordForm } from "./hooks/useChangePassword";
+import Snackbar from "../Snackbar";
+import { useSnackbarFeedback } from "../../hooks/useSnackbarFeedback";
 
 const ChangePasswordForm = () => {
-  const { form, onSubmit, isPending: isLoading } = useChangePasswordForm();
+  const {
+    form,
+    onSubmit,
+    isPending: isLoading,
+    isSuccess,
+    error,
+  } = useChangePasswordForm();
+
+  const { showSuccess, setShowSuccess, showError, setShowError } =
+    useSnackbarFeedback(isSuccess, error);
 
   return (
     <Paper sx={{ p: 3 }}>
@@ -35,6 +46,23 @@ const ChangePasswordForm = () => {
           </Button>
         </Box>
       </FormProvider>
+
+      <Snackbar
+        open={showSuccess}
+        severity="success"
+        message="Password updated successfully"
+        onClose={() => setShowSuccess(false)}
+      />
+      <Snackbar
+        open={showError}
+        severity="error"
+        message={
+          typeof error === "string"
+            ? error
+            : "Something went wrong while updating password"
+        }
+        onClose={() => setShowError(false)}
+      />
     </Paper>
   );
 };
