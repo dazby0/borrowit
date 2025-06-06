@@ -5,7 +5,7 @@ import Sidebar from "./Sidebar";
 
 const SidebarLayout = () => {
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
+    <Box sx={{ display: "flex", height: "100vh", width: "100vw" }}>
       <Sidebar />
       <Box
         component="main"

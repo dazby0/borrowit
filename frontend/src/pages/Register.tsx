@@ -8,6 +8,7 @@ const Register = () => {
   return (
     <Box
       minHeight="100vh"
+      minWidth="100vw"
       display="flex"
       justifyContent="center"
       alignItems="center"

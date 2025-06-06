@@ -17,7 +17,7 @@ public class BookService
         _context = context;
     }
 
-    public async Task<IEnumerable<BookDto>> GetFilteredAsync(BookQueryParams query)
+    public async Task<PagedResult<BookDto>> GetFilteredAsync(BookQueryParams query)
     {
         var books = _context.Books.AsQueryable();
 
@@ -29,6 +29,8 @@ public class BookService
 
         if (query.IsAvailable != null)
             books = books.Where(b => b.IsAvailable == query.IsAvailable);
+
+        var totalCount = await books.CountAsync(); // <- liczba pasujących wyników
 
         books = query.SortBy?.ToLower() switch
         {
@@ -43,7 +45,7 @@ public class BookService
                 : books.OrderBy(b => b.Title)
         };
 
-        return await books
+        var items = await books
             .Skip((query.Page - 1) * query.PageSize)
             .Take(query.PageSize)
             .Select(b => new BookDto
@@ -55,7 +57,14 @@ public class BookService
                 Description = b.Description,
                 IsAvailable = b.IsAvailable,
                 ReturnDueDate = b.ReturnDueDate
-            }).ToListAsync();
+            })
+            .ToListAsync();
+
+        return new PagedResult<BookDto>
+        {
+            Items = items,
+            TotalCount = totalCount
+        };
     }
 
     public async Task<BookDto?> GetByIdAsync(int id)

@@ -22,11 +22,12 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks([FromQuery] BookQueryParams query)
+    public async Task<ActionResult<PagedResult<BookDto>>> GetBooks([FromQuery] BookQueryParams query)
     {
         var books = await _service.GetFilteredAsync(query);
         return Ok(books);
     }
+
 
     [HttpGet("{id}")]
     public async Task<ActionResult<BookDto>> GetBook(int id)
