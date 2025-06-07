@@ -14,13 +14,14 @@ import Home from "./pages/Home";
 import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import MainLayout from "./layouts/MainLayout";
 
-import BookDetailsPage from "./pages/user/BookDetailsPage";
-import BorrowingsPage from "./pages/user/BorrowingsPage";
-import Account from "./pages/user/Account";
+import BookDetailsPage from "./pages/BookDetailsPage";
+import Account from "./pages/Account";
 import BorrowingsAllPage from "./pages/admin/BorrowingsAllPage";
 import UsersPage from "./pages/admin/UsersPage";
 import AddBookPage from "./pages/admin/AddBookPage";
 import EditBookPage from "./pages/admin/EditBook";
+import BorrowingsPage from "./pages/BorrowingsPage";
+import DashboardPage from "./pages/admin/DashboardPage";
 
 const App = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
             <Route path="users" element={<UsersPage />} />
             <Route path="add-book" element={<AddBookPage />} />
             <Route path="edit-book/:id" element={<EditBookPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

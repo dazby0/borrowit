@@ -1,5 +1,10 @@
 import type { BookFormData } from "../schemas/book/bookSchema";
-import type { Book, GetBooksParams, PagedResult } from "../types/book";
+import type {
+  Book,
+  BookBorrowing,
+  GetBooksParams,
+  PagedResult,
+} from "../types/book";
 
 const API_URL = "http://localhost:5127/api/books";
 
@@ -72,4 +77,22 @@ export const updateBook = async (
   if (!res.ok) {
     throw new Error("Failed to update book");
   }
+};
+
+export const getBookBorrowings = async (
+  bookId: number,
+  onlyActive = false
+): Promise<BookBorrowing[]> => {
+  const query = new URLSearchParams();
+  if (onlyActive) query.append("onlyActive", "true");
+
+  const res = await fetch(
+    `${API_URL}/${bookId}/borrowings?${query.toString()}`,
+    {
+      credentials: "include",
+    }
+  );
+
+  if (!res.ok) throw new Error("Failed to fetch borrowings");
+  return res.json();
 };

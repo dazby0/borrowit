@@ -13,9 +13,11 @@ import {
   People,
   AccountCircle,
   LibraryBooks,
+  Assessment,
 } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import logo from "../../assets/logo.png";
 
 const drawerWidth = 240;
 
@@ -42,6 +44,11 @@ const Sidebar = () => {
             icon: <MenuBook />,
             to: "/add-book",
           },
+          {
+            label: "Dashboard",
+            icon: <Assessment />,
+            to: "/dashboard",
+          },
         ]
       : []),
 
@@ -61,6 +68,7 @@ const Sidebar = () => {
         },
       }}
     >
+      <Box component="img" src={logo} alt="BorrowIT Logo" sx={{ p: 2 }} />
       <Toolbar />
       <Box sx={{ overflow: "auto" }}>
         <List>

@@ -1,9 +1,9 @@
 import { Box, Typography, CircularProgress, Stack } from "@mui/material";
-import BorrowingListItem from "../../components/Borrowings/BorrowingListItem";
-import { useUserBorrowings } from "../../api/mutations/useBorrowings";
 import { useState } from "react";
-import type { BorrowingFiltersValues } from "../../components/Borrowings/hooks/useBorrowingFiltersForm";
-import BorrowingFilters from "../../components/Borrowings/BorrowingFilters";
+import type { BorrowingFiltersValues } from "../components/Borrowings/hooks/useBorrowingFiltersForm";
+import { useUserBorrowings } from "../api/mutations/useBorrowings";
+import BorrowingFilters from "../components/Borrowings/BorrowingFilters";
+import BorrowingListItem from "../components/Borrowings/BorrowingListItem";
 
 const BorrowingsPage = () => {
   const [filters, setFilters] = useState<BorrowingFiltersValues>({});

@@ -25,3 +25,9 @@ export interface BorrowingFilters {
 export interface CountResponse {
   count: number;
 }
+
+export interface Statistics {
+  activeBorrowings: number;
+  activeUsers: number;
+  mostBorrowedBooks: { title: string; count: number }[];
+}

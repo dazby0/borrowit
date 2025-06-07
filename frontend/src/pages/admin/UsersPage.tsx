@@ -13,6 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import UserCard from "../../components/users/UserCard";
 import { downloadCsv } from "../../utils/downloadCsv";
+import ExportCsvButton from "../../components/ExportCsvButton";
 
 const UsersPage = () => {
   const { hasRole } = useAuth();
@@ -44,15 +45,7 @@ const UsersPage = () => {
         <Typography variant="h5" gutterBottom>
           All Users
         </Typography>
-        <Button
-          variant="outlined"
-          onClick={() =>
-            downloadCsv("http://localhost:5127/api/users/export", "users.csv")
-          }
-          sx={{ mb: 2 }}
-        >
-          Export to CSV
-        </Button>
+        <ExportCsvButton apiUrl="users" fileName="users.csv" />
       </Box>
 
       <Stack spacing={2}>

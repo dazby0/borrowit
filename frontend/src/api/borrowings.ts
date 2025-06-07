@@ -2,6 +2,7 @@ import type {
   BorrowingFilters,
   BorrowRequest,
   CountResponse,
+  Statistics,
   UserBorrowing,
 } from "../types/borrowings";
 import type { BorrowingFiltersValues } from "../components/Borrowings/hooks/useBorrowingFiltersForm";
@@ -80,5 +81,14 @@ export const getAllBorrowings = async (
 
   if (!res.ok) throw new Error("Failed to fetch borrowings");
 
+  return res.json();
+};
+
+export const getStatistics = async (): Promise<Statistics> => {
+  const res = await fetch(`${API_URL}/stats`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch statistics");
   return res.json();
 };

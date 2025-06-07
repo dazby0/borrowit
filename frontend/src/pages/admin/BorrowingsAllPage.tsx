@@ -6,6 +6,7 @@ import BorrowingListItem from "../../components/Borrowings/BorrowingListItem";
 import type { BorrowingFiltersValues } from "../../components/Borrowings/hooks/useBorrowingFiltersForm";
 import { useAllBorrowings } from "../../api/mutations/useBorrowings";
 import { downloadCsv } from "../../utils/downloadCsv";
+import ExportCsvButton from "../../components/ExportCsvButton";
 
 const BorrowingsAllPage = () => {
   const { hasRole } = useAuth();
@@ -27,18 +28,7 @@ const BorrowingsAllPage = () => {
           All Borrowings
         </Typography>
 
-        <Button
-          variant="outlined"
-          onClick={() =>
-            downloadCsv(
-              "http://localhost:5127/api/borrowings/export",
-              "borrowings.csv"
-            )
-          }
-          sx={{ mb: 2 }}
-        >
-          Export to CSV
-        </Button>
+        <ExportCsvButton apiUrl="borrowings" fileName="borrowings.csv" />
       </Box>
 
       {isLoading ? (

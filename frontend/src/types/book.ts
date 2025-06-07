@@ -30,3 +30,10 @@ export interface BookFiltersValues {
   sortBy?: string;
   sortDir?: "asc" | "desc";
 }
+
+export interface BookBorrowing {
+  username: string;
+  borrowedAt: string;
+  returnDueDate: string;
+  returnedAt: string | null;
+}

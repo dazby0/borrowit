@@ -4,6 +4,7 @@ import {
   borrowBook,
   getActiveBorrowingsCount,
   getAllBorrowings,
+  getStatistics,
   getUserBorrowings,
   returnBook,
 } from "../borrowings";
@@ -50,5 +51,12 @@ export const useAllBorrowings = (filters: BorrowingFiltersValues) => {
   return useQuery({
     queryKey: ["all-borrowings", filters],
     queryFn: () => getAllBorrowings(filters),
+  });
+};
+
+export const useStatistics = () => {
+  return useQuery({
+    queryKey: ["statistics"],
+    queryFn: getStatistics,
   });
 };

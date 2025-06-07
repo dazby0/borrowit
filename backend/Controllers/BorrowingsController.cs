@@ -77,7 +77,7 @@ public class BorrowingsController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpGet("/api/books/{bookId}/borrowings")]
+    [HttpGet("/api/borrowings/book/{bookId}")]
     public async Task<ActionResult<IEnumerable<BookBorrowingDto>>> GetBookBorrowings(int bookId, [FromQuery] bool onlyActive = false)
     {
         var list = await _service.GetBorrowingsForBookAsync(bookId, onlyActive);

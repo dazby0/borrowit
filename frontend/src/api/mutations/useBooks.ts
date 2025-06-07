@@ -3,6 +3,7 @@ import type { GetBooksParams } from "../../types/book";
 import {
   addBook,
   deleteBook,
+  getBookBorrowings,
   getBookById,
   getBooks,
   updateBook,
@@ -37,4 +38,10 @@ export const useDeleteBook = () =>
 export const useUpdateBook = (id: number) =>
   useMutation({
     mutationFn: (payload: BookFormData) => updateBook(id, payload),
+  });
+
+export const useBookBorrowings = (bookId: number, onlyActive = false) =>
+  useQuery({
+    queryKey: ["bookBorrowings", bookId, onlyActive],
+    queryFn: () => getBookBorrowings(bookId, onlyActive),
   });

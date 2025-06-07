@@ -7,10 +7,11 @@ import {
   Button,
   Tooltip,
 } from "@mui/material";
-import CountdownTimer from "../../components/Books/CountdownTimer";
-import Snackbar from "../../components/Snackbar";
-import { BorrowModal } from "../../components/Borrowings/BorrowModal";
-import { useBookDetailsPage } from "../../hooks/useBookDetailsPage";
+import CountdownTimer from "../components/Books/CountdownTimer";
+import Snackbar from "../components/Snackbar";
+import { BorrowModal } from "../components/Borrowings/BorrowModal";
+import { useBookDetailsPage } from "../hooks/useBookDetailsPage";
+import BookBorrowingsHistory from "../components/Books/BookBorrowingsHistory";
 
 const BookDetailsPage = () => {
   const {
@@ -61,6 +62,8 @@ const BookDetailsPage = () => {
       {!book.isAvailable && book.returnDueDate && (
         <CountdownTimer endDate={book.returnDueDate} />
       )}
+
+      <BookBorrowingsHistory bookId={book.id} />
 
       {hasRole("User") && book.isAvailable && (
         <Box mt={4}>
