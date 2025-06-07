@@ -66,9 +66,9 @@ Umożliwia rejestrację i zarządzanie użytkownikami, obsługę wypożyczeń ks
    ```
 3. Uruchom frontend:
    ```bash
-   npm start
+   npm run dev
    ```
-   Frontend będzie dostępny pod adresem: `http://localhost:3000`
+   Frontend będzie dostępny pod adresem: `http://localhost:5137`
 
 ---
 
