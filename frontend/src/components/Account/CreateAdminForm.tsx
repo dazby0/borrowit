@@ -12,7 +12,7 @@ const CreateAdminForm = () => {
     useSnackbarFeedback(isSuccess, error);
 
   return (
-    <Paper sx={{ p: 3, mt: 4 }}>
+    <Paper sx={{ p: 3 }}>
       <Typography variant="h6" gutterBottom>
         Create New Admin
       </Typography>

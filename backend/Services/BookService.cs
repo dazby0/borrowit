@@ -30,7 +30,7 @@ public class BookService
         if (query.IsAvailable != null)
             books = books.Where(b => b.IsAvailable == query.IsAvailable);
 
-        var totalCount = await books.CountAsync(); // <- liczba pasujących wyników
+        var totalCount = await books.CountAsync();
 
         books = query.SortBy?.ToLower() switch
         {

@@ -114,7 +114,7 @@ public class BorrowingService
             .ToListAsync();
     }
 
-    public async Task<List<BorrowingDto>> GetAllAsync(string? username, int page, int pageSize)
+    public async Task<List<BorrowingDto>> GetAllAsync(string? username)
     {
         var query = _context.Borrowings
             .Include(b => b.Book)
@@ -126,8 +126,6 @@ public class BorrowingService
 
         return await query
             .OrderByDescending(b => b.BorrowedAt)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
             .Select(b => new BorrowingDto
             {
                 Id = b.Id,
@@ -139,6 +137,7 @@ public class BorrowingService
             })
             .ToListAsync();
     }
+
 
     public async Task<List<BookBorrowingDto>> GetBorrowingsForBookAsync(int bookId, bool onlyActive)
     {

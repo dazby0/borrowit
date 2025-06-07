@@ -49,3 +49,14 @@ public class UserDto
     public string Email { get; set; } = string.Empty;
     public string Role { get; set; } = "User";
 }
+
+public class UserQueryParams
+{
+    public string? Username { get; set; }
+
+    [Range(1, 100)]
+    public int Page { get; set; } = 1;
+
+    [Range(1, 100)]
+    public int PageSize { get; set; } = 10;
+}

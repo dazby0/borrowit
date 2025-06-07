@@ -58,6 +58,7 @@ builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<BorrowingService>();
 builder.Services.AddScoped<ExportService>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {

@@ -15,7 +15,12 @@ export const useCreateAdminForm = () => {
 
   const onSubmit = (data: CreateAdminFormValues) => {
     mutation.mutate(data, {
-      onSuccess: () => form.reset(),
+      onSuccess: () =>
+        form.reset({
+          username: "",
+          email: "",
+          password: "",
+        }),
     });
   };
 

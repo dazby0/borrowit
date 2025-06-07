@@ -17,11 +17,13 @@ public class UsersController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     private readonly AuthService _authService;
+    private readonly UserService _service;
 
-    public UsersController(ApplicationDbContext context, AuthService authService)
+    public UsersController(ApplicationDbContext context, AuthService authService, UserService service)
     {
         _context = context;
         _authService = authService;
+        _service = service;
     }
 
     [Authorize]
@@ -119,5 +121,13 @@ public class UsersController : ControllerBase
         var csv = exportService.ExportUsersToCsv(users);
 
         return File(Encoding.UTF8.GetBytes(csv), "text/csv", "users.csv");
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<ActionResult<PagedResult<UserDto>>> GetAll([FromQuery] UserQueryParams query)
+    {
+        var result = await _service.GetAllAsync(query);
+        return Ok(result);
     }
 }

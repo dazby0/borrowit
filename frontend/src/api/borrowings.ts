@@ -4,6 +4,7 @@ import type {
   CountResponse,
   UserBorrowing,
 } from "../types/borrowings";
+import type { BorrowingFiltersValues } from "../components/Borrowings/hooks/useBorrowingFiltersForm";
 
 const API_URL = "http://localhost:5127/api/borrowings";
 
@@ -60,4 +61,24 @@ export const getActiveBorrowingsCount = async (): Promise<number> => {
 
   const data: CountResponse = await res.json();
   return data.count;
+};
+
+export const getAllBorrowings = async (
+  filters: BorrowingFiltersValues
+): Promise<UserBorrowing[]> => {
+  const query = new URLSearchParams();
+
+  if (filters.status) query.append("status", filters.status);
+  if (filters.sortBy) query.append("sortBy", filters.sortBy);
+  if (filters.sortOrder) query.append("sortOrder", filters.sortOrder);
+  if ((filters as any).username)
+    query.append("username", (filters as any).username);
+
+  const res = await fetch(`${API_URL}?${query.toString()}`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch borrowings");
+
+  return res.json();
 };

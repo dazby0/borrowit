@@ -53,10 +53,10 @@ public class BorrowingsController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BorrowingDto>>> GetAll([FromQuery] string? username, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<List<BorrowingDto>>> GetAll([FromQuery] string? username)
     {
-        var list = await _service.GetAllAsync(username, page, pageSize);
-        return Ok(list);
+        var result = await _service.GetAllAsync(username);
+        return Ok(result);
     }
 
     [Authorize(Roles = "Admin")]
@@ -71,7 +71,7 @@ public class BorrowingsController : ControllerBase
     [HttpGet("export")]
     public async Task<IActionResult> ExportCsv([FromServices] ExportService exportService)
     {
-        var all = await _service.GetAllAsync(null, 1, int.MaxValue);
+        var all = await _service.GetAllAsync(null);
         var csv = exportService.ExportBorrowingsToCsv(all);
         return File(Encoding.UTF8.GetBytes(csv), "text/csv", "borrowings.csv");
     }

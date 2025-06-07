@@ -3,9 +3,11 @@ import type { BorrowingFilters, BorrowRequest } from "../../types/borrowings";
 import {
   borrowBook,
   getActiveBorrowingsCount,
+  getAllBorrowings,
   getUserBorrowings,
   returnBook,
 } from "../borrowings";
+import type { BorrowingFiltersValues } from "../../components/Borrowings/hooks/useBorrowingFiltersForm";
 
 export const useBorrowBook = () => {
   const queryClient = useQueryClient();
@@ -41,5 +43,12 @@ export const useActiveBorrowingsCount = () => {
     queryKey: ["active-borrowings-count"],
     queryFn: getActiveBorrowingsCount,
     staleTime: 1000 * 60 * 1,
+  });
+};
+
+export const useAllBorrowings = (filters: BorrowingFiltersValues) => {
+  return useQuery({
+    queryKey: ["all-borrowings", filters],
+    queryFn: () => getAllBorrowings(filters),
   });
 };

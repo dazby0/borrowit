@@ -7,7 +7,13 @@ import {
   Toolbar,
   Box,
 } from "@mui/material";
-import { Home, MenuBook, People, AccountCircle } from "@mui/icons-material";
+import {
+  Home,
+  MenuBook,
+  People,
+  AccountCircle,
+  LibraryBooks,
+} from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -17,11 +23,28 @@ const Sidebar = () => {
   const { hasRole } = useAuth();
 
   const items = [
-    { label: "Dashboard", icon: <Home />, to: "/" },
-    { label: "Borrowed Books", icon: <MenuBook />, to: "/borrowings/me" },
-    ...(hasRole("Admin")
-      ? [{ label: "Admin Panel", icon: <People />, to: "/admin/users" }]
+    { label: "Main Page", icon: <Home />, to: "/" },
+
+    ...(!hasRole("Admin")
+      ? [{ label: "Borrowed Books", icon: <MenuBook />, to: "/borrowings/me" }]
       : []),
+
+    ...(hasRole("Admin")
+      ? [
+          {
+            label: "All Borrowings",
+            icon: <LibraryBooks />,
+            to: "/borrowings/all",
+          },
+          { label: "Users", icon: <People />, to: "/users" },
+          {
+            label: "Add Book",
+            icon: <MenuBook />,
+            to: "/add-book",
+          },
+        ]
+      : []),
+
     { label: "Profile", icon: <AccountCircle />, to: "/account" },
   ];
 

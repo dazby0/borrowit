@@ -1,14 +1,20 @@
 import { Box } from "@mui/material";
 import UserInfoCard from "../../components/Account/UserInfoCard";
 import ChangePasswordForm from "../../components/Account/ChangePassword";
+import { useAuth } from "../../context/AuthContext";
+import CreateAdminForm from "../../components/Account/CreateAdminForm";
 
-const UserAccount = () => {
+const Account = () => {
+  const { hasRole } = useAuth();
   return (
-    <Box maxWidth={600}>
+    <Box>
       <UserInfoCard />
-      <ChangePasswordForm />
+      <Box display="flex" gap={4}>
+        <ChangePasswordForm />
+        {hasRole("Admin") && <CreateAdminForm />}
+      </Box>
     </Box>
   );
 };
 
-export default UserAccount;
+export default Account;
