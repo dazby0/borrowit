@@ -63,7 +63,7 @@ const BookDetailsPage = () => {
         <CountdownTimer endDate={book.returnDueDate} />
       )}
 
-      <BookBorrowingsHistory bookId={book.id} />
+      {hasRole("Admin") && <BookBorrowingsHistory bookId={book.id} />}
 
       {hasRole("User") && book.isAvailable && (
         <Box mt={4}>

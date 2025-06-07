@@ -1,10 +1,4 @@
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  Stack,
-  Button,
-} from "@mui/material";
+import { Box, Typography, CircularProgress, Stack } from "@mui/material";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Pagination from "../../components/Pagination";
@@ -12,7 +6,6 @@ import { getAllUsers } from "../../api/users";
 import { useAuth } from "../../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import UserCard from "../../components/users/UserCard";
-import { downloadCsv } from "../../utils/downloadCsv";
 import ExportCsvButton from "../../components/ExportCsvButton";
 
 const UsersPage = () => {
