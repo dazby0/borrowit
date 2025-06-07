@@ -6,7 +6,8 @@
 3. [Instrukcja uruchomienia](#instrukcja-uruchomienia)
 4. [Struktura aplikacji](#struktura-aplikacji)
 5. [Dane wejściowe](#dane-wej%C5%9Bciowe)
-6. [Kontakt](#kontakt)
+6. [Swagger](#swagger)
+7. [Kontakt](#kontakt)
 
 ---
 
@@ -134,6 +135,16 @@ Przykładowe dane testowe można dodać przez mechanizm seedingu w projekcie bac
 - przykładowych użytkowników (Admin, User)
 - kilka książek o różnych tytułach i autorach
 - przykładowe wypożyczenia (aktywne i zakończone)
+
+---
+
+## Swagger
+
+Po uruchomieniu backendu w trybie deweloperskim dostępna jest dokumentacja API wygenerowana automatycznie przez Swaggera:
+
+Adres: [`http://localhost:5127/swagger`](http://localhost:5127/swagger)
+
+Można tam przetestować wszystkie dostępne endpointy, wysyłać żądania oraz sprawdzić schematy danych wejściowych i wyjściowych.
 
 ---
 
