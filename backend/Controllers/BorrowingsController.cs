@@ -25,8 +25,12 @@ public class BorrowingsController : ControllerBase
     public async Task<IActionResult> BorrowBook([FromBody] CreateBorrowingDto dto)
     {
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var success = await _service.BorrowBookAsync(userId, dto.BookId, dto.ReturnDueDate);
-        return success ? Ok() : BadRequest("Book unavailable or already borrowed.");
+        var (success, error) = await _service.BorrowBookAsync(userId, dto.BookId, dto.ReturnDueDate);
+
+        if (!success)
+            return BadRequest(error);
+
+        return Ok();
     }
 
     [Authorize]
@@ -39,12 +43,13 @@ public class BorrowingsController : ControllerBase
 
     [Authorize]
     [HttpGet("me")]
-    public async Task<ActionResult<IEnumerable<BorrowingDto>>> GetMyBorrowings([FromQuery] string? status)
+    public async Task<ActionResult<IEnumerable<BorrowingDto>>> GetMyBorrowings([FromQuery] BorrowingQueryParams queryParams)
     {
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var list = await _service.GetUserBorrowingsAsync(userId, status);
+        var list = await _service.GetUserBorrowingsAsync(userId, queryParams);
         return Ok(list);
     }
+
 
     [Authorize(Roles = "Admin")]
     [HttpGet]
@@ -77,5 +82,14 @@ public class BorrowingsController : ControllerBase
     {
         var list = await _service.GetBorrowingsForBookAsync(bookId, onlyActive);
         return Ok(list);
+    }
+
+    [Authorize]
+    [HttpGet("me/active/count")]
+    public async Task<ActionResult<object>> GetActiveBorrowingsCount()
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var count = await _service.GetActiveBorrowingsCountAsync(userId);
+        return Ok(new { count });
     }
 }

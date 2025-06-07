@@ -22,3 +22,11 @@ export interface PagedResult<T> {
   items: T[];
   totalCount: number;
 }
+
+export interface BookFiltersValues {
+  title?: string;
+  author?: string;
+  isAvailable?: string;
+  sortBy?: string;
+  sortDir?: "asc" | "desc";
+}

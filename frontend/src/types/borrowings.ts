@@ -11,3 +11,17 @@ export interface UserBorrowing {
   returnDueDate: string;
   returnedAt: string | null;
 }
+
+export interface BorrowingFilters {
+  status?: "active" | "returned";
+  sortBy?: "BorrowedAt" | "ReturnedAt";
+  sortOrder?: "asc" | "desc";
+  borrowedFrom?: string;
+  borrowedTo?: string;
+  returnedFrom?: string;
+  returnedTo?: string;
+}
+
+export interface CountResponse {
+  count: number;
+}

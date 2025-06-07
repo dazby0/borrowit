@@ -1,7 +1,10 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { AppBar, Toolbar } from "@mui/material";
 import UserMenu from "./UserMenu";
+import ActiveBorrowingsBadge from "./ActiveBorrowingsBadge";
+import { useAuth } from "../../context/AuthContext";
 
 const Topbar = () => {
+  const { hasRole } = useAuth();
   return (
     <AppBar
       position="static"
@@ -13,10 +16,8 @@ const Topbar = () => {
         px: 3,
       }}
     >
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Typography variant="h6" fontWeight={600} color="text.primary">
-          BorrowIT
-        </Typography>
+      <Toolbar sx={{ justifyContent: "end", gap: 2 }}>
+        {hasRole("User") && <ActiveBorrowingsBadge />}
         <UserMenu />
       </Toolbar>
     </AppBar>

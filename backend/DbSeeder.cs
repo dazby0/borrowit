@@ -1,6 +1,7 @@
 using backend.Data;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using System;
 
 namespace backend.Seed;
@@ -13,12 +14,35 @@ public static class DbSeeder
 
         if (!context.Users.Any())
         {
-            context.Users.AddRange(
-                new User { Username = "admin", Email = "admin@example.com", PasswordHash = "admin123", Role = Role.Admin },
-                new User { Username = "alice", Email = "alice@example.com", PasswordHash = "pass123", Role = Role.User },
-                new User { Username = "bob", Email = "bob@example.com", PasswordHash = "pass456", Role = Role.User }
-            );
+            var hasher = new PasswordHasher<User>();
+
+            var admin = new User
+            {
+                Username = "superadmin",
+                Email = "superadmin@borrowit.pl",
+                Role = Role.Admin
+            };
+            admin.PasswordHash = hasher.HashPassword(admin, "SuperSecret123!");
+
+            var user1 = new User
+            {
+                Username = "johnsmith",
+                Email = "john@borrowit.pl",
+                Role = Role.User
+            };
+            user1.PasswordHash = hasher.HashPassword(user1, "JohnPass123!");
+
+            var user2 = new User
+            {
+                Username = "emilydoe",
+                Email = "emily@borrowit.pl",
+                Role = Role.User
+            };
+            user2.PasswordHash = hasher.HashPassword(user2, "EmilySafe456!");
+
+            context.Users.AddRange(admin, user1, user2);
         }
+
 
         if (!context.Books.Any())
         {

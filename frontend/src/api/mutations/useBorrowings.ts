@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { BorrowRequest } from "../../types/borrowings";
-import { borrowBook, getUserBorrowings, returnBook } from "../borrowings";
+import type { BorrowingFilters, BorrowRequest } from "../../types/borrowings";
+import {
+  borrowBook,
+  getActiveBorrowingsCount,
+  getUserBorrowings,
+  returnBook,
+} from "../borrowings";
 
 export const useBorrowBook = () => {
   const queryClient = useQueryClient();
@@ -13,10 +18,10 @@ export const useBorrowBook = () => {
   });
 };
 
-export const useUserBorrowings = () => {
+export const useUserBorrowings = (filters?: BorrowingFilters) => {
   return useQuery({
-    queryKey: ["user-borrowings"],
-    queryFn: getUserBorrowings,
+    queryKey: ["user-borrowings", filters],
+    queryFn: () => getUserBorrowings(filters),
   });
 };
 
@@ -28,5 +33,13 @@ export const useReturnBook = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-borrowings"] });
     },
+  });
+};
+
+export const useActiveBorrowingsCount = () => {
+  return useQuery({
+    queryKey: ["active-borrowings-count"],
+    queryFn: getActiveBorrowingsCount,
+    staleTime: 1000 * 60 * 1,
   });
 };

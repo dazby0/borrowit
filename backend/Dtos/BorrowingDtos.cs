@@ -33,11 +33,21 @@ public class BookBorrowingDto
 
 public class BorrowingQueryParams
 {
-    public string? Username { get; set; }
+    public string? Status { get; set; } 
+
+    public DateTime? BorrowedFrom { get; set; }
+    public DateTime? BorrowedTo { get; set; }
+
+    public DateTime? ReturnedFrom { get; set; }
+    public DateTime? ReturnedTo { get; set; }
 
     [Range(1, 100)]
     public int Page { get; set; } = 1;
 
     [Range(1, 100)]
-    public int PageSize { get; set; } = 10;
+    public int PageSize { get; set; } = 100;
+
+    public string? SortBy { get; set; } = "BorrowedAt"; 
+    public string? SortOrder { get; set; } = "desc"; 
 }
+

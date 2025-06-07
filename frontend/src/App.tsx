@@ -18,7 +18,7 @@ import { useAuth } from "./context/AuthContext";
 import UserAccount from "./pages/user/Account";
 import AdminAccount from "./pages/admin/Account";
 import BookDetailsPage from "./pages/user/BookDetailsPage";
-import UserBorrowingsPage from "./pages/user/BorrowingsPage";
+import BorrowingsPage from "./pages/user/BorrowingsPage";
 
 const AccountRoute = () => {
   const { user } = useAuth();
@@ -46,7 +46,7 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="account" element={<AccountRoute />} />
             <Route path="books/:id" element={<BookDetailsPage />} />
-            <Route path="borrowings/me" element={<UserBorrowingsPage />} />
+            <Route path="borrowings/me" element={<BorrowingsPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

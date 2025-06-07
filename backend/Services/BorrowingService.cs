@@ -17,14 +17,22 @@ public class BorrowingService
         _context = context;
     }
 
-    public async Task<bool> BorrowBookAsync(int userId, int bookId, DateTime returnDueDate)
+    public async Task<(bool Success, string? Error)> BorrowBookAsync(int userId, int bookId, DateTime returnDueDate)
     {
+        var activeCount = await _context.Borrowings
+            .CountAsync(b => b.UserId == userId && b.ReturnedAt == null);
+
+        if (activeCount >= 3)
+            return (false, "You have reached the maximum number of active borrowings.");
+
         var book = await _context.Books.FindAsync(bookId);
-        if (book == null || !book.IsAvailable) return false;
+        if (book == null || !book.IsAvailable)
+            return (false, "Book not found or unavailable.");
 
         var alreadyBorrowed = await _context.Borrowings.AnyAsync(b =>
             b.UserId == userId && b.BookId == bookId && b.ReturnedAt == null);
-        if (alreadyBorrowed) return false;
+        if (alreadyBorrowed)
+            return (false, "You have already borrowed this book.");
 
         var borrowing = new Borrowing
         {
@@ -39,7 +47,8 @@ public class BorrowingService
 
         _context.Borrowings.Add(borrowing);
         await _context.SaveChangesAsync();
-        return true;
+
+        return (true, null);
     }
 
     public async Task<bool> ReturnBookAsync(int borrowingId)
@@ -58,19 +67,41 @@ public class BorrowingService
         return true;
     }
 
-    public async Task<List<BorrowingDto>> GetUserBorrowingsAsync(int userId, string? status)
+    public async Task<List<BorrowingDto>> GetUserBorrowingsAsync(int userId, BorrowingQueryParams query)
     {
-        var query = _context.Borrowings
+        var q = _context.Borrowings
             .Include(b => b.Book)
             .Where(b => b.UserId == userId);
 
-        if (status == "active")
-            query = query.Where(b => b.ReturnedAt == null);
-        else if (status == "returned")
-            query = query.Where(b => b.ReturnedAt != null);
+        if (query.Status == "active")
+            q = q.Where(b => b.ReturnedAt == null);
+        else if (query.Status == "returned")
+            q = q.Where(b => b.ReturnedAt != null);
 
-        return await query
-            .OrderByDescending(b => b.BorrowedAt)
+        if (query.BorrowedFrom.HasValue)
+            q = q.Where(b => b.BorrowedAt >= query.BorrowedFrom.Value);
+
+        if (query.BorrowedTo.HasValue)
+            q = q.Where(b => b.BorrowedAt <= query.BorrowedTo.Value);
+
+        if (query.ReturnedFrom.HasValue)
+            q = q.Where(b => b.ReturnedAt >= query.ReturnedFrom.Value);
+
+        if (query.ReturnedTo.HasValue)
+            q = q.Where(b => b.ReturnedAt <= query.ReturnedTo.Value);
+
+        q = query.SortBy?.ToLower() switch
+        {
+            "returnedat" => query.SortOrder == "asc"
+                ? q.OrderBy(b => b.ReturnedAt)
+                : q.OrderByDescending(b => b.ReturnedAt),
+
+            _ => query.SortOrder == "asc"
+                ? q.OrderBy(b => b.BorrowedAt)
+                : q.OrderByDescending(b => b.BorrowedAt),
+        };
+
+        return await q
             .Select(b => new BorrowingDto
             {
                 Id = b.Id,
@@ -149,4 +180,11 @@ public class BorrowingService
             mostBorrowedBooks
         };
     }
+
+    public async Task<int> GetActiveBorrowingsCountAsync(int userId)
+    {
+        return await _context.Borrowings
+            .CountAsync(b => b.UserId == userId && b.ReturnedAt == null);
+    }
 }
+

@@ -1,50 +1,44 @@
 import { Box, Typography, Paper, Chip, Button } from "@mui/material";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 import type { UserBorrowing } from "../../types/borrowings";
-import { useReturnBook } from "../../api/mutations/useBorrowings";
 import ConfirmationModal from "../ConfirmationModal";
 import Snackbar from "../Snackbar";
-import { useState } from "react";
+import { useBorrowingListItem } from "./hooks/useBorrowingListItem";
 
 interface Props {
   borrowing: UserBorrowing;
 }
 
 const BorrowingListItem = ({ borrowing }: Props) => {
-  const [openConfirm, setOpenConfirm] = useState(false);
-  const [snackbar, setSnackbar] = useState<{
-    open: boolean;
-    message: string;
-    severity: "success" | "error";
-  }>({ open: false, message: "", severity: "success" });
-
-  const isReturned = !!borrowing.returnedAt;
-  const returnMutation = useReturnBook();
-
-  const handleReturn = async () => {
-    try {
-      await returnMutation.mutateAsync(borrowing.id);
-      setSnackbar({
-        open: true,
-        message: `"${borrowing.bookTitle}" returned successfully`,
-        severity: "success",
-      });
-    } catch {
-      setSnackbar({
-        open: true,
-        message: `Failed to return "${borrowing.bookTitle}"`,
-        severity: "error",
-      });
-    }
-    setOpenConfirm(false);
-  };
+  const {
+    isReturned,
+    openConfirm,
+    setOpenConfirm,
+    snackbar,
+    setSnackbar,
+    returnMutation,
+    handleReturn,
+  } = useBorrowingListItem(borrowing);
 
   return (
     <>
       <Paper sx={{ p: 2 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box>
-            <Typography variant="h6">{borrowing.bookTitle}</Typography>
+            <Typography
+              variant="h6"
+              component={Link}
+              to={`/books/${borrowing.bookId}`}
+              sx={{
+                textDecoration: "none",
+                color: "primary.main",
+                "&:hover": { textDecoration: "underline" },
+              }}
+            >
+              {borrowing.bookTitle}
+            </Typography>
+
             <Typography variant="body2">
               Borrowed: {format(new Date(borrowing.borrowedAt), "dd.MM.yyyy")}
             </Typography>
